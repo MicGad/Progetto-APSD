@@ -1,35 +1,38 @@
 package apsd.interfaces.containers.base;
 
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.traits.Reallocable;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.traits.Reallocable;
 
-/** Interface: ClearableContainer che è anche Reallocable. */
-public interface ReallocableContainer<T> {
-  // Must extend ClearableContainer and Reallocable.
-  // T must have a recursive bound.
-
-  /* ************************************************************************ */
-  /* Specific member functions of ReallocableContainer                        */
-  /* ************************************************************************ */
+/** Interface: Container con capacita' riallocabile. */
+public interface ReallocableContainer<T extends ReallocableContainer<T>> extends ClearableContainer<T>, Reallocable {
 
   double GROW_FACTOR = 2.0; // Must be strictly greater than 1.
   double SHRINK_FACTOR = 2.0; // Must be strictly greater than 1.
 
-  // Capacity
-  // Grow
-  // Grow
-  // Shrink
+  Natural Capacity();
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Container                        */
-  /* ************************************************************************ */
+  default void Grow() {
+    Grow(Natural.ONE);
+  }
 
-  // Size
+  /** Nuova capacita': (capacita' corrente + dim) * GROW_FACTOR. */
+  default void Grow(Natural dim) {
+    Realloc(Natural.Of((long) ((Capacity().ToLong() + dim.ToLong()) * GROW_FACTOR)));
+  }
 
-  /* ************************************************************************ */
-  /* Override specific member functions from ClearableContainer               */
-  /* ************************************************************************ */
+  /** Nuova capacita': capacita' corrente / SHRINK_FACTOR. */
+  default void Shrink() {
+    Realloc(Natural.Of((long) (Capacity().ToLong() / SHRINK_FACTOR)));
+  }
 
-  // Clear
+  @Override
+  default Natural Size() {
+    return Capacity();
+  }
+
+  @Override
+  default void Clear() {
+    Realloc(Natural.ZERO);
+  }
 
 }

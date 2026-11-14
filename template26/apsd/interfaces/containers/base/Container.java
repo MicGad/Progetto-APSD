@@ -1,17 +1,18 @@
 package apsd.interfaces.containers.base;
 
-// import apsd.classes.utilities.Natural;
+import apsd.classes.utilities.Natural;
 
-/** Interface: Container, la base di tutti i contenitori. */
-public interface Container<T> {
-  // T must have a recursive bound.
+/** Interface: Contenitore generico. */
+public interface Container<T extends Container<T>> {
 
-  /* ************************************************************************ */
-  /* Specific member functions of Container                                   */
-  /* ************************************************************************ */
+  /** Restituisce un nuovo contenitore vuoto dello stesso tipo. */
+  T Empty();
 
-  // Empty
-  // Size
-  // IsEmpty
+  /** Numero di elementi contenuti. */
+  Natural Size();
+
+  default boolean IsEmpty() {
+    return Size().IsZero();
+  }
 
 }

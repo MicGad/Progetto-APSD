@@ -1,28 +1,41 @@
 package apsd.interfaces.containers.sequences;
 
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.RemovableContainer;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.RemovableContainer;
 
 /** Interface: Sequence con supporto alla rimozione di un dato tramite posizione. */
-public interface RemovableAtSequence<T, Data> {
-  // Must extend Sequence and RemovableContainer.
-  // T must have a recursive bound.
+public interface RemovableAtSequence<T extends RemovableAtSequence<T, Data>, Data> extends Sequence<T, Data>, RemovableContainer<T, Data> {
 
-  /* ************************************************************************ */
-  /* Specific member functions of RemovableAtSequence                         */
-  /* ************************************************************************ */
+  default void RemoveAt(Natural pos) {
+    AtNRemove(pos);
+  }
 
-  // RemoveAt
-  // AtNRemove
-  // RemoveFirst
-  // FirstNRemove
-  // RemoveLast
-  // LastNRemove
+  Data AtNRemove(Natural pos);
 
-  /* ************************************************************************ */
-  /* Override specific member functions from RemovableContainer               */
-  /* ************************************************************************ */
+  default void RemoveFirst() {
+    RemoveAt(Natural.ZERO);
+  }
 
-  // Remove
+  default Data FirstNRemove() {
+    return AtNRemove(Natural.ZERO);
+  }
+
+  default void RemoveLast() {
+    LastNRemove();
+  }
+
+  default Data LastNRemove() {
+    if (IsEmpty()) throw new IndexOutOfBoundsException("The sequence is empty!");
+    return AtNRemove(Size().Decrement());
+  }
+
+  /** Rimuove la prima occorrenza di dat; true se presente. */
+  @Override
+  default boolean Remove(Data dat) {
+    Natural pos = Search(dat);
+    if (pos == null) return false;
+    RemoveAt(pos);
+    return true;
+  }
 
 }

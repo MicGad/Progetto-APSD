@@ -1,32 +1,38 @@
 package apsd.interfaces.containers.base;
 
-// import apsd.classes.utilities.Natural;
+import apsd.classes.utilities.Natural;
 
-/** Interface: ReallocableContainer che è espandibile e riducibile. */
-public interface ResizableContainer<T> {
-  // T must have a recursive bound.
-  // Must extend ReallocableContainer.
-
-  /* ************************************************************************ */
-  /* Specific member functions of ResizableContainer                          */
-  /* ************************************************************************ */
+/** Interface: Container con size logica distinta dalla capacita'. */
+public interface ResizableContainer<T extends ResizableContainer<T>> extends ReallocableContainer<T> {
 
   double THRESHOLD_FACTOR = 2.0; // Must be strictly greater than 1.
 
-  // Expand
-  // Reduce
+  default void Expand() {
+    Expand(Natural.ONE);
+  }
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Container                        */
-  /* ************************************************************************ */
+  void Expand(Natural num);
 
-  // Size
+  default void Reduce() {
+    Reduce(Natural.ONE);
+  }
 
-  /* ************************************************************************ */
-  /* Override specific member functions from ReallocableContainer             */
-  /* ************************************************************************ */
+  void Reduce(Natural num);
 
-  // Grow
-  // Shrink
+  @Override
+  Natural Size();
+
+  /** Nuova capacita': (size corrente + dim) * GROW_FACTOR. */
+  @Override
+  default void Grow(Natural dim) {
+    Realloc(Natural.Of((long) ((Size().ToLong() + dim.ToLong()) * GROW_FACTOR)));
+  }
+
+  /** Nuova capacita': capacita' corrente / SHRINK_FACTOR, ma mai sotto la size. */
+  @Override
+  default void Shrink() {
+    long newcap = (long) (Capacity().ToLong() / SHRINK_FACTOR);
+    Realloc(Natural.Of(Math.max(newcap, Size().ToLong())));
+  }
 
 }

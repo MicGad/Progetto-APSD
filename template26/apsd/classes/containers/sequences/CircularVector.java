@@ -1,25 +1,27 @@
 package apsd.classes.containers.sequences;
 
-// import apsd.classes.containers.sequences.abstractbases.CircularVectorBase;
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.classes.containers.sequences.abstractbases.CircularVectorBase;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.TraversableContainer;
 
 /** Object: Concrete (static) circular vector implementation. */
-public class CircularVector<Data> {
-  // Must extend CircularVectorBase.
+public class CircularVector<Data> extends CircularVectorBase<CircularVector<Data>, Data> {
 
-  /* ************************************************************************ */
-  /* Fields and constructors                                                  */
-  /* ************************************************************************ */
+  public CircularVector() {
+    super();
+  }
 
-  // CircularVector()
-  // CircularVector(Natural inisize)
-  // CircularVector(TraversableContainer<?, Data> con)
+  public CircularVector(Natural inisize) {
+    super(inisize);
+  }
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Container                        */
-  /* ************************************************************************ */
+  public CircularVector(TraversableContainer<?, Data> con) {
+    super(con);
+  }
 
-  // Empty
+  @Override
+  public CircularVector<Data> Empty() {
+    return new CircularVector<>();
+  }
 
 }

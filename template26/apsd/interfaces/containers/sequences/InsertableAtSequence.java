@@ -1,31 +1,36 @@
 package apsd.interfaces.containers.sequences;
 
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.InsertableContainer;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.InsertableContainer;
 
 /** Interface: Sequence con supporto all'inserimento di un dato tramite posizione. */
-public interface InsertableAtSequence<T, Data> {
-  // Must extend Sequence and InsertableContainer.
-  // T must have a recursive bound.
+public interface InsertableAtSequence<T extends InsertableAtSequence<T, Data>, Data> extends Sequence<T, Data>, InsertableContainer<T, Data> {
 
-  /* ************************************************************************ */
-  /* Specific member functions of InsertableAtSequence                        */
-  /* ************************************************************************ */
+  void InsertAt(Data dat, Natural pos);
 
-  // InsertAt
-  // InsertFirst
-  // InsertLast
+  default void InsertFirst(Data dat) {
+    InsertAt(dat, Natural.ZERO);
+  }
 
-  /* ************************************************************************ */
-  /* Override specific member functions from InsertableContainer              */
-  /* ************************************************************************ */
+  default void InsertLast(Data dat) {
+    InsertAt(dat, Size());
+  }
 
-  // Insert
+  @Override
+  default boolean Insert(Data dat) {
+    InsertLast(dat);
+    return true;
+  }
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Sequence                         */
-  /* ************************************************************************ */
-
-  // SubSequence
+  @Override
+  default T SubSequence(Natural from, Natural to) {
+    T res = Empty();
+    long size = Size().ToLong();
+    long last = Math.min(to.ToLong(), size - 1);
+    for (long i = from.ToLong(); i <= last; i++) {
+      res.InsertLast(GetAt(Natural.Of(i)));
+    }
+    return res;
+  }
 
 }

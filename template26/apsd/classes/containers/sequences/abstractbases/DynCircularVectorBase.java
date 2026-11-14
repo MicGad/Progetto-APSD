@@ -1,53 +1,87 @@
 package apsd.classes.containers.sequences.abstractbases;
 
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.TraversableContainer;
-// import apsd.interfaces.containers.sequences.DynVector;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.ReallocableContainer;
+import apsd.interfaces.containers.base.ResizableContainer;
+import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.interfaces.containers.sequences.DynVector;
 
 /** Object: Abstract dynamic circular vector base implementation. */
-abstract public class DynCircularVectorBase<T, Data> {
-  // Must extend CircularVectorBase.
-  // Must implement DynVector.
-  // T must have a recursive bound.
+abstract public class DynCircularVectorBase<T extends DynCircularVectorBase<T, Data>, Data> extends CircularVectorBase<T, Data> implements DynVector<T, Data> {
 
-  /* ************************************************************************ */
-  /* Fields and constructors                                                  */
-  /* ************************************************************************ */
+  protected long size = 0L;
 
-  // protected long size = 0L;
-  // DynCircularVectorBase()
-  // DynCircularVectorBase(Natural inicapacity)
-  // DynCircularVectorBase(TraversableContainer<?, Data> con)
+  public DynCircularVectorBase() {
+    super();
+  }
+
+  public DynCircularVectorBase(Natural inicapacity) {
+    super(inicapacity);
+  }
+
+  public DynCircularVectorBase(TraversableContainer<?, Data> con) {
+    super(con);
+    size = arr.length;
+  }
 
   /* ************************************************************************ */
   /* Specific member functions of DynCircularVectorBase                       */
   /* ************************************************************************ */
 
-  // ArrayAlloc
+  /** Un nuovo array e' sempre logicamente vuoto. */
+  @Override
+  protected void ArrayAlloc(Natural newsize) {
+    super.ArrayAlloc(newsize);
+    size = 0L;
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
 
-  // Size
+  @Override
+  public Natural Size() {
+    return Natural.Of(size);
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from ClearableContainer               */
   /* ************************************************************************ */
 
-  // Clear
+  @Override
+  public void Clear() {
+    Realloc(Natural.ZERO);
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from ReallocableContainer             */
   /* ************************************************************************ */
 
-  // Realloc
+  @Override
+  public void Realloc(Natural newsize) {
+    long oldsize = size;
+    super.Realloc(newsize);
+    size = Math.min(oldsize, newsize.ToLong());
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from ResizableContainer               */
   /* ************************************************************************ */
 
-  // Expand
-  // Reduce
+  @Override
+  public void Expand(Natural num) {
+    long newsize = size + num.ToLong();
+    if (newsize >= arr.length) Grow(num);
+    size = newsize;
+  }
+
+  @Override
+  public void Reduce(Natural num) {
+    long newsize = size - num.ToLong();
+    if (newsize < 0) throw new IllegalArgumentException("Cannot reduce by " + num + " a vector of size " + size + "!");
+    for (long i = newsize; i < size; i++) arr[PhysicalIndex(i)] = null;
+    size = newsize;
+    if (ResizableContainer.THRESHOLD_FACTOR * ReallocableContainer.SHRINK_FACTOR * newsize <= arr.length) Shrink();
+  }
 
 }

@@ -1,25 +1,27 @@
 package apsd.classes.containers.sequences;
 
-// import apsd.classes.containers.sequences.abstractbases.LinearVectorBase;
-// import apsd.classes.utilities.Natural;
-// import apsd.interfaces.containers.base.TraversableContainer;
+import apsd.classes.containers.sequences.abstractbases.LinearVectorBase;
+import apsd.classes.utilities.Natural;
+import apsd.interfaces.containers.base.TraversableContainer;
 
-/** Object: Concrete (static linear) vector implementation. */
-public class Vector<Data> {
-  // Must extend LinearVectorBase.
+/** Object: Concrete (static) linear vector implementation. */
+public class Vector<Data> extends LinearVectorBase<Vector<Data>, Data> {
 
-  /* ************************************************************************ */
-  /* Fields and constructors                                                  */
-  /* ************************************************************************ */
+  public Vector() {
+    super();
+  }
 
-  // Vector()
-  // Vector(Natural inisize)
-  // Vector(TraversableContainer<?, Data> con)
+  public Vector(Natural inisize) {
+    super(inisize);
+  }
 
-  /* ************************************************************************ */
-  /* Override specific member functions from Container                        */
-  /* ************************************************************************ */
+  public Vector(TraversableContainer<?, Data> con) {
+    super(con);
+  }
 
-  // Empty
+  @Override
+  public Vector<Data> Empty() {
+    return new Vector<>();
+  }
 
 }
