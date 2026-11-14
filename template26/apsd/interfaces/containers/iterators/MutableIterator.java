@@ -1,12 +1,13 @@
 package apsd.interfaces.containers.iterators;
 
 /** Interface: Iteratore mutabile. */
-public interface MutableIterator<Data> extends Iterator<Data> {
+public interface MutableIterator<Data> {
+  // Must extend Iterator.
 
   /* ************************************************************************ */
   /* Specific member functions of MutableIterator                             */
   /* ************************************************************************ */
 
-  void SetCurrent(Data dat);
+  // SetCurrent
 
 }

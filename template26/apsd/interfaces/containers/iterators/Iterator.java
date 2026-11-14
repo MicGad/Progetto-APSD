@@ -7,10 +7,8 @@ public interface Iterator<Data> {
   /* Specific member functions of Iterator                                    */
   /* ************************************************************************ */
 
-  boolean IsValid();
-
-  void Reset();
-
-  Data GetCurrent();
+  // IsValid
+  // Reset
+  // GetCurrent
 
 }
