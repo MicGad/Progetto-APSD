@@ -37,10 +37,10 @@ public class WSet<Data> extends WSetBase<WSet<Data>, Data, Chain<?, Data>> {
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
 
-  /** Nuovo insieme vuoto, basato sullo stesso tipo di catena. */
+  /** Nuovo insieme vuoto, basato sulla catena di default. */
   @Override
   public WSet<Data> Empty() {
-    return new WSet<Data>(chn.Empty(), new VList<Data>());
+    return new WSet<>();
   }
 
 }

@@ -40,7 +40,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
    * Inserisce un nuovo nodo con dato dat subito dopo il nodo prev
    * (in testa alla lista se prev e null) e lo restituisce.
    */
-  protected LLNode<Data> LinkAfter(LLNode<Data> prev, Data dat) {
+  private LLNode<Data> LinkAfter(LLNode<Data> prev, Data dat) {
     Box<LLNode<Data>> ref = (prev == null) ? headref : prev.GetNext();
     LLNode<Data> node = new LLNode<>(dat, ref.Get());
     ref.Set(node);
@@ -53,7 +53,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
    * Scollega il nodo che segue prev (la testa se prev e null)
    * e ne restituisce il dato.
    */
-  protected Data UnlinkAfter(LLNode<Data> prev) {
+  private Data UnlinkAfter(LLNode<Data> prev) {
     Box<LLNode<Data>> ref = (prev == null) ? headref : prev.GetNext();
     LLNode<Data> node = ref.Get();
     ref.Set(node.GetNext().Get());
@@ -298,7 +298,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
     ForwardIterator<Data> it = FIterator();
     while (it.IsValid() && idx <= last) {
       Data dat = it.DataNNext();
-      if (idx >= from.ToLong()) tail = res.LinkAfter(tail, dat);
+      if (idx >= from.ToLong()) tail = ((LLChainBase<T, Data>) res).LinkAfter(tail, dat);
       idx++;
     }
     return res;
@@ -318,9 +318,19 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
   }
 
   @Override
+  public void RemoveFirst() {
+    FirstNRemove();
+  }
+
+  @Override
   public Data FirstNRemove() {
     ExcIfOutOfBound(Natural.ZERO);
     return UnlinkAfter(null);
+  }
+
+  @Override
+  public void RemoveLast() {
+    LastNRemove();
   }
 
   @Override

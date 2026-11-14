@@ -71,7 +71,7 @@ abstract public class DynCircularVectorBase<T extends DynCircularVectorBase<T, D
   @Override
   public void Expand(Natural num) {
     long newsize = size + num.ToLong();
-    if (newsize >= arr.length) Grow(num);
+    if (newsize > arr.length) Grow(num);
     size = newsize;
   }
 
@@ -79,9 +79,9 @@ abstract public class DynCircularVectorBase<T extends DynCircularVectorBase<T, D
   public void Reduce(Natural num) {
     long newsize = size - num.ToLong();
     if (newsize < 0) throw new IllegalArgumentException("Cannot reduce by " + num + " a vector of size " + size + "!");
-    for (long i = newsize; i < size; i++) arr[PhysicalIndex(i)] = null;
+    for (long i = newsize; i < size; i++) arr[(int) ((start + i) % arr.length)] = null;
     size = newsize;
-    if (ResizableContainer.THRESHOLD_FACTOR * ReallocableContainer.SHRINK_FACTOR * newsize <= arr.length) Shrink();
+    if (arr.length > 0 && ResizableContainer.THRESHOLD_FACTOR * ReallocableContainer.SHRINK_FACTOR * newsize <= arr.length) Shrink();
   }
 
 }

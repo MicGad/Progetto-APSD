@@ -94,6 +94,15 @@ public class LLList<Data> extends LLChainBase<LLList<Data>, Data> implements Lis
   /* Override specific member functions from InsertableAtSequence             */
   /* ************************************************************************ */
 
+  /** Inserisce un nuovo nodo con dato dat subito dopo prev (in testa se prev e null). */
+  private void LinkAfter(LLNode<Data> prev, Data dat) {
+    Box<LLNode<Data>> ref = (prev == null) ? headref : prev.GetNext();
+    LLNode<Data> node = new LLNode<>(dat, ref.Get());
+    ref.Set(node);
+    if (node.GetNext().Get() == null) tailref.Set(node);
+    size.Increment();
+  }
+
   @Override
   public void InsertAt(Data dat, Natural pos) {
     if (pos == null || pos.ToLong() > size.ToLong()) {

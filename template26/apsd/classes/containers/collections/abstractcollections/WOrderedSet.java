@@ -37,10 +37,10 @@ public class WOrderedSet<Data extends Comparable<? super Data>> extends WOrdered
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
 
-  /** Nuovo insieme vuoto, basato sullo stesso tipo di catena. */
+  /** Nuovo insieme vuoto, basato sulla catena di default. */
   @Override
   public WOrderedSet<Data> Empty() {
-    return new WOrderedSet<Data>(chn.Empty(), new VSortedChain<Data>());
+    return new WOrderedSet<>();
   }
 
 }

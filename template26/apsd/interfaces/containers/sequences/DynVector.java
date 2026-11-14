@@ -8,7 +8,7 @@ public interface DynVector<T extends DynVector<T, Data>, Data> extends Resizable
 
   @Override
   default void InsertAt(Data dat, Natural pos) {
-    if (pos.ToLong() > Size().ToLong()) {
+    if (pos == null || pos.ToLong() > Size().ToLong()) {
       throw new IndexOutOfBoundsException("Index: " + pos + "; Size: " + Size() + "!");
     }
     Expand();

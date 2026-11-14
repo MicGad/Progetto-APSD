@@ -32,6 +32,7 @@ public interface OrderedTraversableContainer<T extends OrderedTraversableContain
 
   @Override
   default Data Predecessor(Data dat) {
+    if (dat == null) return null;
     Box<Data> pred = new Box<>();
     TraverseForward(cur -> {
       if (cur.compareTo(dat) < 0 && (pred.IsNull() || cur.compareTo(pred.Get()) > 0)) pred.Set(cur);
@@ -42,6 +43,7 @@ public interface OrderedTraversableContainer<T extends OrderedTraversableContain
 
   @Override
   default Data Successor(Data dat) {
+    if (dat == null) return null;
     Box<Data> succ = new Box<>();
     TraverseForward(cur -> {
       if (cur.compareTo(dat) > 0 && (succ.IsNull() || cur.compareTo(succ.Get()) < 0)) succ.Set(cur);

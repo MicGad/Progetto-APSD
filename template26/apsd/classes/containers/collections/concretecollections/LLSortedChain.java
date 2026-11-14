@@ -25,7 +25,10 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
     if (chn == null) throw new NullPointerException("Chain cannot be null!");
     LLNode<Data> tail = null;
     ForwardIterator<Data> it = chn.FIterator();
-    while (it.IsValid()) tail = LinkAfter(tail, it.DataNNext());
+    while (it.IsValid()) {
+      LinkAfter(tail, it.DataNNext());
+      tail = tailref.Get();
+    }
   }
 
   public LLSortedChain(TraversableContainer<?, Data> con) {
@@ -90,8 +93,27 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
     return prev;
   }
 
+  /** Inserisce un nuovo nodo con dato dat subito dopo prev (in testa se prev e null). */
+  private void LinkAfter(LLNode<Data> prev, Data dat) {
+    Box<LLNode<Data>> ref = (prev == null) ? headref : prev.GetNext();
+    LLNode<Data> node = new LLNode<>(dat, ref.Get());
+    ref.Set(node);
+    if (node.GetNext().Get() == null) tailref.Set(node);
+    size.Increment();
+  }
+
+  /** Scollega il nodo che segue prev (la testa se prev e null) e ne restituisce il dato. */
+  private Data UnlinkAfter(LLNode<Data> prev) {
+    Box<LLNode<Data>> ref = (prev == null) ? headref : prev.GetNext();
+    LLNode<Data> node = ref.Get();
+    ref.Set(node.GetNext().Get());
+    if (node == tailref.Get()) tailref.Set(prev);
+    size.Decrement();
+    return node.Get();
+  }
+
   /** Nodo che segue prev (la testa se prev e null). */
-  protected LLNode<Data> NodeAfter(LLNode<Data> prev) {
+  private LLNode<Data> NodeAfter(LLNode<Data> prev) {
     Box<LLNode<Data>> ref = (prev == null) ? headref : prev.GetNext();
     return ref.Get();
   }
@@ -103,6 +125,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
   /** Inserisce dat dopo tutti i dati minori o uguali (inserimento stabile). */
   @Override
   public boolean Insert(Data dat) {
+    if (dat == null) throw new NullPointerException("Data cannot be null!");
     LinkAfter(PredSuccFind(dat), dat);
     return true;
   }
@@ -113,6 +136,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public boolean Remove(Data dat) {
+    if (dat == null) return false;
     LLNode<Data> prev = PredFind(dat);
     LLNode<Data> node = NodeAfter(prev);
     if (node == null || node.Get().compareTo(dat) != 0) return false;
@@ -126,6 +150,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public Natural Search(Data dat) {
+    if (dat == null) return null;
     long idx = 0L;
     LLNode<Data> cur = headref.Get();
     while (cur != null && cur.Get().compareTo(dat) < 0) {
@@ -141,6 +166,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public Natural SearchPredecessor(Data dat) {
+    if (dat == null) return null;
     long idx = 0L;
     LLNode<Data> cur = headref.Get();
     while (cur != null && cur.Get().compareTo(dat) < 0) {
@@ -152,6 +178,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public Natural SearchSuccessor(Data dat) {
+    if (dat == null) return null;
     long idx = 0L;
     LLNode<Data> cur = headref.Get();
     while (cur != null && cur.Get().compareTo(dat) <= 0) {
@@ -167,6 +194,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public Data Predecessor(Data dat) {
+    if (dat == null) return null;
     LLNode<Data> node = PredFind(dat);
     return (node == null) ? null : node.Get();
   }
@@ -178,12 +206,14 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public Data PredecessorNRemove(Data dat) {
+    if (dat == null) return null;
     if (PredFind(dat) == null) return null;
     return UnlinkAfter(PredPredFind(dat));
   }
 
   @Override
   public Data Successor(Data dat) {
+    if (dat == null) return null;
     LLNode<Data> node = NodeAfter(PredSuccFind(dat));
     return (node == null) ? null : node.Get();
   }
@@ -195,6 +225,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public Data SuccessorNRemove(Data dat) {
+    if (dat == null) return null;
     LLNode<Data> prev = PredSuccFind(dat);
     if (NodeAfter(prev) == null) return null;
     return UnlinkAfter(prev);
@@ -206,6 +237,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public boolean InsertIfAbsent(Data dat) {
+    if (dat == null) throw new NullPointerException("Data cannot be null!");
     LLNode<Data> prev = PredFind(dat);
     LLNode<Data> node = NodeAfter(prev);
     if (node != null && node.Get().compareTo(dat) == 0) return false;
@@ -215,6 +247,7 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
 
   @Override
   public void RemoveOccurrences(Data dat) {
+    if (dat == null) return;
     LLNode<Data> prev = PredFind(dat);
     LLNode<Data> node = NodeAfter(prev);
     while (node != null && node.Get().compareTo(dat) == 0) {

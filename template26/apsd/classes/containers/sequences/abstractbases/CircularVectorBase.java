@@ -31,7 +31,7 @@ abstract public class CircularVectorBase<T extends CircularVectorBase<T, Data>, 
   }
 
   /** Indice fisico nell'array della posizione logica idx. */
-  protected int PhysicalIndex(long idx) {
+  private int PhysicalIndex(long idx) {
     return (int) ((start + idx) % arr.length);
   }
 

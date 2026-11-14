@@ -34,7 +34,7 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
   /* ************************************************************************ */
 
   /** Prima posizione con dato maggiore o uguale a dat (ricerca binaria). */
-  protected long LowerBound(Data dat) {
+  private long LowerBound(Data dat) {
     long lo = 0L;
     long hi = vec.Size().ToLong();
     while (lo < hi) {
@@ -46,7 +46,7 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
   }
 
   /** Prima posizione con dato strettamente maggiore di dat (ricerca binaria). */
-  protected long UpperBound(Data dat) {
+  private long UpperBound(Data dat) {
     long lo = 0L;
     long hi = vec.Size().ToLong();
     while (lo < hi) {
@@ -64,6 +64,7 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
   /** Inserisce dat dopo tutti i dati minori o uguali (inserimento stabile). */
   @Override
   public boolean Insert(Data dat) {
+    if (dat == null) throw new NullPointerException("Data cannot be null!");
     vec.InsertAt(dat, Natural.Of(UpperBound(dat)));
     return true;
   }
@@ -74,6 +75,7 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
 
   @Override
   public boolean InsertIfAbsent(Data dat) {
+    if (dat == null) throw new NullPointerException("Data cannot be null!");
     long pos = LowerBound(dat);
     if (pos < vec.Size().ToLong() && vec.GetAt(Natural.Of(pos)).compareTo(dat) == 0) return false;
     vec.InsertAt(dat, Natural.Of(pos));
@@ -82,6 +84,7 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
 
   @Override
   public void RemoveOccurrences(Data dat) {
+    if (dat == null) return;
     long lo = LowerBound(dat);
     long hi = UpperBound(dat);
     if (lo == hi) return;

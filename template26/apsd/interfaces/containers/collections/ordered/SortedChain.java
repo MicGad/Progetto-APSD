@@ -15,7 +15,7 @@ public interface SortedChain<T extends SortedChain<T, Data>, Data extends Compar
 
   /** Intersezione sul posto per fusione di due catene ordinate. */
   default void Intersection(SortedChain<?, Data> chn) {
-    if (chn == null) return;
+    if (chn == null || chn == this) return;
     ArrayList<Data> kept = new ArrayList<>();
     ForwardIterator<Data> fst = FIterator();
     ForwardIterator<Data> snd = chn.FIterator();

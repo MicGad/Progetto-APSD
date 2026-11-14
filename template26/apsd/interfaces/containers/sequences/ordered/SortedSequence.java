@@ -49,6 +49,7 @@ public interface SortedSequence<T extends SortedSequence<T, Data>, Data extends 
   /** Posizione della prima occorrenza di dat (null se assente); si ferma al primo dato maggiore. */
   @Override
   default Natural Search(Data dat) {
+    if (dat == null) return null;
     ForwardIterator<Data> it = FIterator();
     long idx = 0L;
     while (it.IsValid()) {
@@ -67,6 +68,7 @@ public interface SortedSequence<T extends SortedSequence<T, Data>, Data extends 
   /** Posizione dell'ultimo dato strettamente minore di dat, oppure null. */
   @Override
   default Natural SearchPredecessor(Data dat) {
+    if (dat == null) return null;
     ForwardIterator<Data> it = FIterator();
     long idx = 0L;
     while (it.IsValid() && it.DataNNext().compareTo(dat) < 0) idx++;
@@ -76,6 +78,7 @@ public interface SortedSequence<T extends SortedSequence<T, Data>, Data extends 
   /** Posizione del primo dato strettamente maggiore di dat, oppure null. */
   @Override
   default Natural SearchSuccessor(Data dat) {
+    if (dat == null) return null;
     ForwardIterator<Data> it = FIterator();
     long idx = 0L;
     while (it.IsValid()) {
