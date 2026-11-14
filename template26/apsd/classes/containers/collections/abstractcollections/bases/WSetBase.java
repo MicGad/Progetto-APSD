@@ -25,14 +25,14 @@ abstract public class WSetBase<T extends WSetBase<T, Data, Chn>, Data, Chn exten
   public WSetBase(TraversableContainer<?, Data> con) {
     if (con == null) throw new NullPointerException("Container cannot be null!");
     ChainAlloc();
-    AllInserted(con);
+    SomeInserted(con);
   }
 
   public WSetBase(Chn chn, TraversableContainer<?, Data> con) {
     if (chn == null) throw new NullPointerException("Chain cannot be null!");
     if (con == null) throw new NullPointerException("Container cannot be null!");
     this.chn = chn;
-    AllInserted(con);
+    SomeInserted(con);
   }
 
   /* ************************************************************************ */
