@@ -82,11 +82,13 @@ abstract public class VectorBase<T extends VectorBase<T, Data>, Data> implements
 
     @Override
     public Data GetCurrent() {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       return GetAt(Natural.Of(idx));
     }
 
     @Override
     public void SetCurrent(Data dat) {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       SetAt(dat, Natural.Of(idx));
     }
 
@@ -125,11 +127,13 @@ abstract public class VectorBase<T extends VectorBase<T, Data>, Data> implements
 
     @Override
     public Data GetCurrent() {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       return GetAt(Natural.Of(idx));
     }
 
     @Override
     public void SetCurrent(Data dat) {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       SetAt(dat, Natural.Of(idx));
     }
 

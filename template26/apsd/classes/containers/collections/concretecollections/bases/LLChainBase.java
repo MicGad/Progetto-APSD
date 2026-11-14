@@ -79,6 +79,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
 
     @Override
     public Box<LLNode<Data>> GetCurrent() {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       return cur;
     }
 
@@ -130,6 +131,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
 
     @Override
     public Box<LLNode<Data>> GetCurrent() {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       return refs.GetAt(Natural.Of(idx));
     }
 
@@ -216,6 +218,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
 
     @Override
     public Data GetCurrent() {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       return it.GetCurrent().Get().Get();
     }
 
@@ -226,6 +229,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
 
     @Override
     public Data DataNNext() {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       return it.DataNNext().Get().Get();
     }
 
@@ -252,6 +256,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
 
     @Override
     public Data GetCurrent() {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       return it.GetCurrent().Get().Get();
     }
 
@@ -262,6 +267,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
 
     @Override
     public Data DataNPrev() {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       return it.DataNPrev().Get().Get();
     }
 
@@ -291,6 +297,7 @@ abstract public class LLChainBase<T extends LLChainBase<T, Data>, Data> implemen
   /** Sottosequenza [from, to] (to troncato all ultima posizione); i dati sono accodati senza riordinarli. */
   @Override
   public T SubSequence(Natural from, Natural to) {
+    if (from == null || to == null) throw new NullPointerException("Positions cannot be null!");
     T res = Empty();
     long last = Math.min(to.ToLong(), size.ToLong() - 1L);
     long idx = 0L;

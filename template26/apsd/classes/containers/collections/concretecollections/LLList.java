@@ -42,6 +42,7 @@ public class LLList<Data> extends LLChainBase<LLList<Data>, Data> implements Lis
 
     @Override
     public void SetCurrent(Data dat) {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       it.GetCurrent().Get().Set(dat);
     }
 
@@ -56,6 +57,7 @@ public class LLList<Data> extends LLChainBase<LLList<Data>, Data> implements Lis
 
     @Override
     public void SetCurrent(Data dat) {
+      if (!IsValid()) throw new IndexOutOfBoundsException("Iterator is not valid (end of iteration or empty container)!");
       it.GetCurrent().Get().Set(dat);
     }
 
